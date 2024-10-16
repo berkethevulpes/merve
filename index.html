@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>=^.^=</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 10px;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        button, input {
+            padding: 10px 20px;
+            font-size: 18px;
+            margin: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        input[type="password"] {
+            width: 80%;
+            max-width: 300px;
+        }
+
+        /* Arka plan renkleri */
+        .page1 { background-color: #d0bcd5; } /* Burlywood */
+        .page2 { background-color: #add8e6; } /* LightBlue */
+        .page3 { background-color: #A2AD9C; } /* LightGreen */
+        .page4 { background-color: #ffcccb; } /* LightCoral */
+        .page5 { background-color: #C6AEC7; } /* MistyRose */
+        .page6 { background-color: #7F5A58; } /* Lavender */
+        .page7 { background-color: #CC7A8B; } /* LightGoldenRodYellow */
+        .page8 { background-color: #90EE90; } /* Khaki */
+        .page9 { background-color: #ffb6c1; } /* LightPink */
+        .page10 { background-color: #B09FCA; } /* Wheat */
+        .page11 { background-color: #D891EF; } /* LightGray */
+        .page12 { background-color: #FDEEF4; } /* Light Yellow */
+        .page13 { background-color: #f8B88B; } /* Golden Yellow */
+    </style>
+</head>
+<body>
+
+    <h1 id="message">Sayfa 1: Merhaba, örnek bir yazı!</h1>
+    <button id="nextButton">Sonraki Sayfa</button>
+    <input type="password" id="passwordInput" placeholder="Şifreyi girin" style="display: none;">
+    <button id="submitButton" style="display: none;">Gönder</button>
+
+    <!-- Arkaplanda çalacak müzik -->
+    <audio id="backgroundMusic" loop>
+        <source src="muzik-dosyası.mp3" type="audio/mpeg">
+        Tarayıcınız audio etiketini desteklemiyor.
+    </audio>
+
+    <script>
+        const correctPassword1 = "küflü kedi";  // İlk şifre
+        const correctPassword2 = "kaktüs";  // İkinci şifre
+        let currentPage = 1;  // Başlangıç sayfası
+        const backgroundMusic = document.getElementById("backgroundMusic");
+
+        // Her sayfa için farklı mesajlar
+        const messages = [
+            "Sayfa 1: Selam M.",
+            "Sayfa 2: Nasılsın?",
+            "Sayfa 3: Söylemek istediğim bir kaç şey vardı..",
+            "Sayfa 4: ***Devam etmek için şifre giriniz*** şifre:Whatsappta atılması yasaklı sticker kara canlının [tam ismi]",
+            "Sayfa 5: Tebrikler! Doğru şifre:) neyse konu daha fazla küflenmeden devam edelim...ehem...Sana olan sevgim ve saygım hiçbir zaman sorgulanamaz. Ancak, kıskançlığımın seni nasıl etkilediğini görmek, kalbimde büyük bir ağırlık yarattı. ",
+            "Sayfa 6: Ayrıca, bazen birlikte geçirdiğimiz zamanların yetersiz olduğunu düşündüğüm için de kafamda kurdum.. İlişkinin değerini anladığım halde, zamanın kısıtlı olması beni kaygılandırdı ve bu kaygı, sana karşı daha da olumsuz bir tutum sergilememi sağladı.",
+            "Sayfa 7: Senin bu ilişki içindeki yerin çok özel ve değerli. Seninle geçirdiğim her an, hayatımın en güzel anlarından biri oluyor..",
+            "Sayfa 8: ***Tekrar şifre:') 'Merve :?:' olarak kaydetmiştim seni hatırlarsın, özel kişileri emoji ile kaydettiğimi ve sana da bir emoji tanımlayacağımı söylemiştim. Adının yanında [ne] ekledim sence? :)",
+            "Sayfa 9: Senden özür dilerim. Seni kırdığım ve hislerini hiçe saydığım için gerçekten üzgünüm. Bunun için özür dilemekten başka bir şey yapmam gerektiğini biliyorum.",
+            "Sayfa 10: Bu süreçte sana karşı daha anlayışlı ve destekleyici olmayı öğrenmek istiyorum. Kalbimi açmak ve sana olan hislerimi doğru bir şekilde ifade etmek istiyorum. Lütfen bana bu hatamı telafi etme şansı ver.",
+            "Sayfa 11: Seni çok seviyorum ve bu durumu geride bırakabilmek için çalışmak istiyorum. Kalbinden affını isteyerek, ilişkimizin daha sağlıklı ve mutlu bir hale gelmesi için adımlar atmaya hazırım.",
+            "Sayfa 12: Seni çok çokÇOKÇOK..ÇOK...ÇOKÇOK..SEVİYORUM ❤️❤️❤️❤️❤️",
+            "Sayfa 13: Bu da bonus olsun:)"  // Yeni 13. sayfa
+        ];
+
+        function updateMessage() {
+            document.getElementById("message").innerText = messages[currentPage - 1];
+            document.title = (currentPage === 10 || currentPage === 11 || currentPage === 12 || currentPage === 13) ? "❤️" : "=^.^=";  // Sayfa başlıkları
+            // Arka plan rengini güncelle
+            document.body.className = "";  // Önceki sınıfı temizle
+            document.body.classList.add("page" + currentPage);  // Yeni sınıfı ekle
+        }
+
+        function showPasswordPrompt() {
+            document.getElementById("passwordInput").style.display = "inline";
+            document.getElementById("submitButton").style.display = "inline";
+        }
+
+        function hidePasswordPrompt() {
+            document.getElementById("passwordInput").style.display = "none";
+            document.getElementById("submitButton").style.display = "none";
+        }
+
+        function showNextButton() {
+            document.getElementById("nextButton").style.display = "inline";
+        }
+
+        function hideNextButton() {
+            document.getElementById("nextButton").style.display = "none";
+        }
+
+        document.getElementById("nextButton").addEventListener("click", function() {
+            if (currentPage < 3) {
+                currentPage++;
+                updateMessage();
+            } else if (currentPage === 3) {
+                currentPage++;
+                hideNextButton();  // "Sonraki Sayfa" butonunu gizle
+                updateMessage();
+                showPasswordPrompt();  // 4. sayfada şifre isteği aç
+            } else if (currentPage === 4) {
+                currentPage++;
+                hidePasswordPrompt();  // Şifre kutusunu gizle
+                updateMessage();
+                showNextButton();  // Diğer sayfalarda buton tekrar görünsün
+            } else if (currentPage < 7) {
+                currentPage++;
+                updateMessage();
+            } else if (currentPage === 7) {
+                currentPage++;
+                hideNextButton();  // 8. sayfada buton gizlensin
+                updateMessage();
+                showPasswordPrompt();  // 8. sayfada şifre isteği aç
+            } else if (currentPage === 8) {
+                currentPage++;
+                hidePasswordPrompt();  // Şifre kutusunu gizle
+                updateMessage();
+                showNextButton(); // 9. sayfada geçiş butonunu göster
+            } else if (currentPage === 9) {
+                currentPage++;
+                updateMessage(); // 10. sayfaya geç
+            } else if (currentPage === 10) {
+                currentPage++;
+                updateMessage(); // 11. sayfaya geç
+            } else if (currentPage === 11) {
+                currentPage++;
+                updateMessage(); // 12. sayfaya geç
+            } else if (currentPage === 12) {
+                currentPage++;
+                updateMessage(); // 13. sayfaya geç
+            } else if (currentPage === 13) {
+                window.location.href = "https://youtu.be/ipfu9r4T8gY";  // 13. sayfada yönlendirme
+            }
+            backgroundMusic.play();  // Müzik çalmaya başla
+        });
+
+        document.getElementById("submitButton").addEventListener("click", function() {
+            let inputPassword = document.getElementById("passwordInput").value;
+            if (currentPage === 4) {
+                // İlk şifre kontrolü
+                if (inputPassword === correctPassword1) {
+                    currentPage++;
+                    hidePasswordPrompt();  // Şifre kutusunu gizle
+                    updateMessage();
+                    showNextButton();  // Diğer sayfalarda buton tekrar görünsün
+                } else {
+                    alert("Yanlış şifre, tekrar deneyin!");
+                }
+            } else if (currentPage === 8) {
+                // İkinci şifre kontrolü
+                if (inputPassword === correctPassword2) {
+                    currentPage++;
+                    hidePasswordPrompt();  // Şifre kutusunu gizle
+                    updateMessage();
+                    showNextButton(); // 9. sayfada geçiş butonunu göster
+                } else {
+                    alert("Yanlış şifre, tekrar deneyin!");
+                }
+            }
+        });
+
+        // Sayfa yüklendiğinde sadece ilk sayfa için butonu göster
+        if (currentPage === 1) {
+            showNextButton();
+        }
+
+        updateMessage();  // Sayfa yüklendiğinde ilk sayfayı göster
+    </script>
+
+</body>
+</html>
